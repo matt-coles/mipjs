@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"> -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+    <title>MIPS.js</title>
+
+    <link href='https://fonts.googleapis.com/css?family=Work+Sans' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <h1>MIPS.js <small>See MIPS run, really!</small></h1>
+        <hr />
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <p>
+          <span class="buttons">
+            <button class="btn btn-primary">Assemble</button>
+            <button class="btn btn-success">Run</button>
+            <button class="btn btn-warning">Step</button>
+          </span>
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <textarea placeholder="Try some assembly here..." class="form-control" id="code"></textarea>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            <canvas id="display"></canvas>
+            <hr />
+            <p class="text-center">PC: 0xbfc0 0000</p>
+          </div>
+          <div class="col-md-3">
+            <table class="table table-condensed table-responsive">
+              <thead>
+                <tr><th>GPR</th><th>Value</th><th>GPR</th><th>Value</th></tr>
+              </thead>
+              <tbody>
+                <tr><th class="zero active">zero</th><td class="zero active">0x0000 0000</td><th class="s0">$s0</th><td class="s0">0x0000 0000</td></tr>
+                <tr><th class="at">$at</th><td class="at">0x0000 0000<th class="s1">$s1</th><td class="s1">0x0000 0000</td></td></tr>
+                <tr><th class="v0">$v0</th><td class="v0">0x0000 0000<th class="s2">$s2</th><td class="s2">0x0000 0000</td></td></tr>
+                <tr><th class="v1">$v1</th><td class="v1">0x0000 0000<th class="s3">$s3</th><td class="s3">0x0000 0000</td></td></tr>
+                <tr><th class="a0">$a0</th><td class="a0">0x0000 0000<th class="s4">$s4</th><td class="s4">0x0000 0000</td></td></tr>
+                <tr><th class="a1">$a1</th><td class="a1">0x0000 0000<th class="s5">$s5</th><td class="s5">0x0000 0000</td></td></tr>
+                <tr><th class="a2">$a2</th><td class="a2">0x0000 0000<th class="s6">$s6</th><td class="s6">0x0000 0000</td></td></tr>
+                <tr><th class="a3">$a3</th><td class="a3">0x0000 0000<th class="s7">$s7</th><td class="s7">0x0000 0000</td></td></tr>
+                <tr><th class="t0">$t0</th><td class="t0">0x0000 0000<th class="t8">$t8</th><td class="t8">0x0000 0000</td></td></tr>
+                <tr><th class="t1">$t1</th><td class="t1">0x0000 0000<th class="t9">$t9</th><td class="t9">0x0000 0000</td></td></tr>
+                <tr><th class="t2">$t2</th><td class="t2">0x0000 0000<th class="k0">$k0</th><td class="k0">0x0000 0000</td></td></tr>
+                <tr><th class="t3">$t3</th><td class="t3">0x0000 0000<th class="k1">$k1</th><td class="k1">0x0000 0000</td></td></tr>
+                <tr><th class="t4">$t4</th><td class="t4">0x0000 0000<th class="gp">$gp</th><td class="gp">0x0000 0000</td></td></tr>
+                <tr><th class="t5">$t5</th><td class="t5">0x0000 0000<th class="sp">$sp</th><td class="sp">0x0000 0000</td></td></tr>
+                <tr><th class="t6">$t6</th><td class="t6">0x0000 0000<th class="s8">$s8</th><td class="s8">0x0000 0000</td></td></tr>
+                <tr><th class="t7">$t7</th><td class="t7">0x0000 0000<th class="ra">$ra</th><td class="ra">0x0000 0000</td></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="index.js"></script>
+  </body>
+</html>

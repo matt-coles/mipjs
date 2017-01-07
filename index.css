@@ -1,0 +1,26 @@
+textarea {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 14px !important;
+  resize: none;
+}
+
+html, body {
+  height:100%;
+}
+
+canvas {
+  background-color: #000;
+  margin-left: auto;
+  margin-right: auto;
+  width: 160px;
+  height: 160px;
+  display: block;
+}
+
+#code {
+  height:75vh;
+}
+
+.buttons {
+  margin-bottom: 2%;
+}
