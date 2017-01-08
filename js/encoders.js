@@ -20,8 +20,24 @@ const encoders = {
   'LUI': (rt, immediate) => {
     let encoded = '001111'
     encoded = encoded + '0'.repeat(5)
-    encoded = encoded + utils.dec2binu(getReg(rt))
+    encoded = encoded + utils.dec2binu(getReg(rt), 5)
     encoded = encoded + utils.hex2bin(immediate, 16)
+    return '0x' + utils.bin2hex(encoded, 8)
+  },
+  'ORI': (rt, rs, immediate) => {
+    let encoded = '001101'
+    encoded = encoded + utils.dec2binu(getReg(rs), 5)
+    encoded = encoded + utils.dec2binu(getReg(rt), 5)
+    encoded = encoded + utils.hex2bin(immediate, 16)
+    return '0x' + utils.bin2hex(encoded, 8)
+  },
+  'SW': (rt, offsetBase) => {
+    const [offset, base] = utils.splitOffsetBase(offsetBase)
+    let encoded = '101011'
+    encoded = encoded + utils.dec2binu(getReg(base), 5)
+    encoded = encoded + utils.dec2binu(getReg(rt), 5)
+    encoded = encoded + utils.int16_2bin(offset, 16)
+    console.log(encoded)
     return '0x' + utils.bin2hex(encoded, 8)
   }
 }
