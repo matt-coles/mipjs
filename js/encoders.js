@@ -17,28 +17,25 @@ const getReg = (id) => {
 }
 
 const encoders = {
-  'LUI': (rt, immediate) => {
-    let encoded = '001111'
-    encoded = encoded + '0'.repeat(5)
-    encoded = encoded + utils.dec2binu(getReg(rt), 5)
-    encoded = encoded + utils.hex2bin(immediate, 16)
-    return '0x' + utils.bin2hex(encoded, 8)
-  },
-  'ORI': (rt, rs, immediate) => {
-    let encoded = '001101'
-    encoded = encoded + utils.dec2binu(getReg(rs), 5)
-    encoded = encoded + utils.dec2binu(getReg(rt), 5)
-    encoded = encoded + utils.hex2bin(immediate, 16)
-    return '0x' + utils.bin2hex(encoded, 8)
-  },
+  'LUI': (rt, immediate) => 
+  '0x'.concat(utils.bin2hex(
+    '001111'.concat(
+      '0'.repeat(5),
+      utils.dec2binu(getReg(rt), 5),
+      utils.hex2bin(immediate, 16)), 8)),
+  'ORI': (rt, rs, immediate) => 
+  '0x'.concat(utils.bin2hex(
+    '001101'.concat(
+      utils.dec2binu(getReg(rs), 5),
+      utils.dec2binu(getReg(rt), 5),
+      utils.hex2bin(immediate, 16)), 8)),
   'SW': (rt, offsetBase) => {
     const [offset, base] = utils.splitOffsetBase(offsetBase)
-    let encoded = '101011'
-    encoded = encoded + utils.dec2binu(getReg(base), 5)
-    encoded = encoded + utils.dec2binu(getReg(rt), 5)
-    encoded = encoded + utils.int16_2bin(offset, 16)
-    console.log(encoded)
-    return '0x' + utils.bin2hex(encoded, 8)
+    return '0x'.concat(utils.bin2hex(
+      '101011'.concat(
+        utils.dec2binu(getReg(base), 5),
+        utils.dec2binu(getReg(rt), 5),
+        utils.int16_2bin(offset, 16)), 8))
   }
 }
 
