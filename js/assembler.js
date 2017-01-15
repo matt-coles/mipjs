@@ -1,6 +1,6 @@
 // --- START DEBUG ONLY CODE ---
-const fs = require('fs')
-const input = fs.readFileSync('test.asm', { encoding: 'utf-8' })
+// const fs = require('fs')
+// const input = fs.readFileSync('test.asm', { encoding: 'utf-8' })
 // --- END DEBUG ONLY CODE ---
 
 const encoders = require('./encoders.js')
@@ -13,4 +13,8 @@ const parse = lineArray => lineArray.map(line => {
   }
 }).map(line => encoders[line.instruction].apply(null, line.arguments))
 
-console.log(parse(lines(input)))
+// console.log(parse(lines(input)))
+module.exports = {
+  'lines': lines,
+  'parse': parse
+}
