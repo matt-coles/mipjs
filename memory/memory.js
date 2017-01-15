@@ -2,7 +2,7 @@
 // will not be filling up the array and therefore will not be using much RAM, however if
 // the full 4gb of memory are used, then it might prove problematic, and I will likely
 // move to a server side memory model that persists most data to disk
-const mainMemory = {}
+let mainMemory = {}
 
 // Pads a string with 0's until it is the desired length
 const padAddress = (addr, len, ch) => (addr.length >= len) ? 
@@ -60,5 +60,6 @@ module.exports = {
   storeHalfWord, storeHalfWord,
   loadByte: loadByte,
   loadHalfWord: loadHalfWord,
-  loadWord: loadWord
+  loadWord: loadWord,
+  clearMemory: () => mainMemory = {}
 }

@@ -20,7 +20,7 @@ module.exports = {
   'parse': parse
 }
 
-},{"./encoders.js":3}],2:[function(require,module,exports){
+},{"./encoders.js":4}],2:[function(require,module,exports){
 // put some stuff into memory
 const memory = require('../memory/memory.js')
 const utils = require('./utils.js')
@@ -32,17 +32,38 @@ const padAddress = (addr, len, ch) => (addr.length >= len) ?
 const incrAddr = (addr, n) => padAddress((parseInt(addr, 2) + n).toString(2), 32, '0')
 
 const baseAddr = '0xbfc00000'
-const loadBootCode = (code) => code.map((c, i) => memory.storeWord(incrAddr(utils.hex2bin(baseAddr, 32), i*4), utils.hex2bin(c, 32)))
+const loadBootCode = (code) => {
+  memory.clearMemory()
+  code.map((c, i) => memory.storeWord(incrAddr(utils.hex2bin(baseAddr, 32), i*4), utils.hex2bin(c, 32)))
+}
 
 module.exports = {
   'loadBootCode': loadBootCode
 }
 
 },{"../memory/memory.js":6,"./utils.js":5}],3:[function(require,module,exports){
+// This file should hold the DOM interaction code
+let hex = ''
+const assembler = require('./assembler.js')
+const bootloader = require('./bootload.js')
+
+const assembleButton = document.getElementById('assemble')
+const assembleButtonHandler = event => {
+  const code = document.getElementById('code')
+  const rawCode = code.value
+  hex = assembler.parse(assembler.lines(rawCode))
+  bootloader.loadBootCode(hex)
+  console.log(hex.join('\n'))
+}
+  
+
+assembleButton.addEventListener('click', assembleButtonHandler)
+
+},{"./assembler.js":1,"./bootload.js":2}],4:[function(require,module,exports){
 const utils = require('./utils.js')
 
 const regmap = [
-  'zero', 'at', 'v0', 'v1', 'a0', 'a1', 'a2', 't0', 't1', 't2', 't3', 't4', 't5',
+  'zero', 'at', 'v0', 'v1', 'a0', 'a1', 'a2', 'a3', 't0', 't1', 't2', 't3', 't4', 't5',
   't6', 't7', 's0', 's1', 's2', 's3', 's4', 's5', 's6', 's7', 't8', 't9', 'k0',
   'k1', 'gp', 'sp', 's8', 'ra' ]
 
@@ -82,25 +103,7 @@ const encoders = {
 
 module.exports = encoders
 
-},{"./utils.js":5}],4:[function(require,module,exports){
-// This file should hold the DOM interaction code
-let hex = ''
-const assembler = require('./assembler.js')
-const bootloader = require('./bootload.js')
-
-const assembleButton = document.getElementById('assemble')
-const assembleButtonHandler = event => {
-  const code = document.getElementById('code')
-  const rawCode = code.value
-  hex = assembler.parse(assembler.lines(rawCode))
-  bootloader.loadBootCode(hex)
-  console.log(hex.join('\n'))
-}
-  
-
-assembleButton.addEventListener('click', assembleButtonHandler)
-
-},{"./assembler.js":1,"./bootload.js":2}],5:[function(require,module,exports){
+},{"./utils.js":5}],5:[function(require,module,exports){
 const error = (error) => console.error(error)
 
 const dec2binu = (dec, length) => {
@@ -155,7 +158,7 @@ module.exports = {
 // will not be filling up the array and therefore will not be using much RAM, however if
 // the full 4gb of memory are used, then it might prove problematic, and I will likely
 // move to a server side memory model that persists most data to disk
-const mainMemory = {}
+let mainMemory = {}
 
 // Pads a string with 0's until it is the desired length
 const padAddress = (addr, len, ch) => (addr.length >= len) ? 
@@ -188,7 +191,6 @@ const storeByte = (addr, data) => {
 
 // Stores two bytes in memory array, with the lower bytes in the lower addresses
 const storeHalfWord = (addr, data) => {
-  console.log(addr)
   if (data.length == 16) {
     if (addr.slice(-1) === '0') {
       storeByte(addr, data.slice(8))
@@ -214,7 +216,8 @@ module.exports = {
   storeHalfWord, storeHalfWord,
   loadByte: loadByte,
   loadHalfWord: loadHalfWord,
-  loadWord: loadWord
+  loadWord: loadWord,
+  clearMemory: () => mainMemory = {}
 }
 
-},{}]},{},[4]);
+},{}]},{},[3]);

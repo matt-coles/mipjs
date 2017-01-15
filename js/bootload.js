@@ -9,7 +9,10 @@ const padAddress = (addr, len, ch) => (addr.length >= len) ?
 const incrAddr = (addr, n) => padAddress((parseInt(addr, 2) + n).toString(2), 32, '0')
 
 const baseAddr = '0xbfc00000'
-const loadBootCode = (code) => code.map((c, i) => memory.storeWord(incrAddr(utils.hex2bin(baseAddr, 32), i*4), utils.hex2bin(c, 32)))
+const loadBootCode = (code) => {
+  memory.clearMemory()
+  code.map((c, i) => memory.storeWord(incrAddr(utils.hex2bin(baseAddr, 32), i*4), utils.hex2bin(c, 32)))
+}
 
 module.exports = {
   'loadBootCode': loadBootCode
